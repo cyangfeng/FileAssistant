@@ -7,26 +7,26 @@
 #include "SearchThread.h"
 #include "DealFileThread.h"
 
-enum DoneType {
-    DONE_COPY,
-    DONE_MOVE,
-    DONE_COMPRESS,
-
+enum FileState {
+	STATE_COPY,
+	STATE_COMPRESS = 3,
+	STATE_DECOMPRESS,
+    STATE_NONE
 };
 
 class XItemData
 {
 public:
-    XItemData() {};
-    XItemData(const QFileInfo& fileInfo, const QString& fileState)
-    {
-        m_fileState = fileState;
-        m_fileInfo = fileInfo;
-    };
-    ~XItemData() {};
+	XItemData() {};
+	XItemData(const QFileInfo& fileInfo, const FileState& fileState)
+	{
+		m_fileState = fileState;
+		m_fileInfo = fileInfo;
+	};
+	~XItemData() {};
 
-    QFileInfo m_fileInfo;
-    QString m_fileState;
+	QFileInfo m_fileInfo;
+	FileState m_fileState;
 };
 Q_DECLARE_METATYPE(XItemData)  //注册，必不可少
 
@@ -44,6 +44,7 @@ private:
     void OnSearch();
     void OnDoing();
     void OnShowDoneFile();
+    void OnKeyword();
 
     void OnSearchStarted();
     void OnSearchFinished();
@@ -51,7 +52,7 @@ private:
 
 	void OnDealStarted();
 	void OnDealFinished();
-	void OnProcessChanged(const QString& sRatio);
+    void OnValueChanged(int nValue);
 
     QString ConvertFielSize(qint64 nSize);
     void UpdateListItems(int nIndex);
@@ -61,7 +62,11 @@ private:
     bool IsDocumentFile(const QFileInfo& fileInfo);
     bool IsCompressFile(const QFileInfo& fileInfo);
 
-    QString GetFileState(const QFileInfo& fileInfo);
+    FileState GetFileState(const QFileInfo& fileInfo);
+    QString GetFileStateName(const QFileInfo& fileInfo);
+    bool ContainKeyword(const QString& fileName) const;
+
+    void RemoveInvalidFileInfo(const QFileInfo& fileInfo);
 
 private:
     Ui::FileAssistantClass ui;
@@ -69,7 +74,7 @@ private:
     SearchThread m_searchThread;
     DealFileThread m_dealThread;
     QFileInfoList m_fileInfoList;
-    QMap<QString, QString> m_setDoneFile;
+    QMap<QString, FileState> m_mapDoneFile;
 
     std::unique_ptr<QStandardItemModel> m_pModel;
 };

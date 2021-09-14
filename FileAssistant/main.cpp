@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     FileAssistant w;
-    w.setWindowTitle(QStringLiteral("文件助手"));
+    w.setWindowTitle(QStringLiteral("文件助手 V1.0"));
     w.setWindowIcon(QIcon("image/shell.png"));
     w.show();
     return a.exec();
