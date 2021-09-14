@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/FileAssistant">
+        <file>image/plane04.png</file>
+        <file>image/shell.png</file>
+    </qresource>
+</RCC>
