@@ -10,7 +10,6 @@ public:
 	SearchThread();
 
 	void SetFilePath(const QString& filePath);
-	void SetRange(qint64 nMin, qint64 nMax);
 	QFileInfoList GetFileInfoList() const;
 
 protected:
@@ -24,8 +23,6 @@ private:
 
 	bool FindFile(const QString& filePath);
 
-	qint64 m_nMaxSize = 0;
-	qint64 m_nMinSize = 0;
 	QString m_sFilePath;
 	QFileInfoList m_fileInfoList;
 };

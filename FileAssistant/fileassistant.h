@@ -37,6 +37,9 @@ class FileAssistant : public QDialog
 public:
     FileAssistant(QWidget *parent = Q_NULLPTR);
 
+protected:
+    void resizeEvent(QResizeEvent* event);
+
 private:
     void Initial();
 
@@ -45,6 +48,14 @@ private:
     void OnDoing();
     void OnShowDoneFile();
     void OnKeyword();
+    void OnDealTypeChanged(int nIndex);
+    void OnSpinValueChanged(double dValue);
+    void OnTableRightClicked(const QPoint&);
+
+    // 列表右键事件
+    void OnReCheck();
+    void OnOpen();
+    void OnDelete();
 
     void OnSearchStarted();
     void OnSearchFinished();
@@ -67,6 +78,7 @@ private:
     bool ContainKeyword(const QString& fileName) const;
 
     void RemoveInvalidFileInfo(const QFileInfo& fileInfo);
+    void EnableControls(bool bEable = true);
 
 private:
     Ui::FileAssistantClass ui;
@@ -76,5 +88,6 @@ private:
     QFileInfoList m_fileInfoList;
     QMap<QString, FileState> m_mapDoneFile;
 
-    std::unique_ptr<QStandardItemModel> m_pModel;
+    QMenu *m_pMenu;
+    std::unique_ptr<QStandardItemModel> m_upModel;
 };

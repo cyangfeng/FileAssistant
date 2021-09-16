@@ -1,6 +1,5 @@
 #include "DealFileThread.h"
 #include <QFileDialog>
-#include <QDataStream>
 #include <QDebug>
 
 #include "include/JlCompress.h"

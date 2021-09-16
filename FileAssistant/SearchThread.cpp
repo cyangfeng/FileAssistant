@@ -12,12 +12,6 @@ void SearchThread::SetFilePath(const QString& filePath)
 	m_sFilePath = filePath;
 }
 
-void SearchThread::SetRange(qint64 nMin, qint64 nMax)
-{
-	m_nMaxSize = nMax;
-	m_nMinSize = nMin;
-}
-
 QFileInfoList SearchThread::GetFileInfoList() const
 {
 	return m_fileInfoList;
@@ -29,6 +23,7 @@ void SearchThread::run()
 	{
 		m_fileInfoList.clear();
 	}
+
 	if (!m_sFilePath.isEmpty())
 	{
 		FindFile(m_sFilePath);
@@ -47,7 +42,9 @@ bool SearchThread::FindFile(const QString& filePath)
 	//将其转化为一个list
 	QFileInfoList list = dir.entryInfoList();
 	if (list.size() < 1)
+	{
 		return false;
+	}
 
 	int i = 0;
 	//采用递归算法
@@ -60,11 +57,8 @@ bool SearchThread::FindFile(const QString& filePath)
 		}
 		else
 		{
-			if (fileInfo.size() > m_nMinSize && fileInfo.size() < m_nMaxSize)
-			{
-				m_fileInfoList.append(fileInfo);
-				qDebug() << fileInfo.filePath() << ":" << fileInfo.fileName();
-			}
+			m_fileInfoList.append(fileInfo);
+			qDebug() << fileInfo.filePath() << ":" << fileInfo.fileName();
 		}
 
 		++i;
