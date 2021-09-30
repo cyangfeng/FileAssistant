@@ -68,11 +68,23 @@ void DealFileThread::run()
 
 bool DealFileThread::CopyFiles()
 {
+	QDir dir(m_toPath);
+	if (!dir.exists())
+	{
+		if (!dir.mkdir(m_toPath))
+		{
+			return false;
+		}
+	}
+
 	int nCount = 0;
 	for (const auto& filePath : m_FromFiles)
 	{
-		QString fileName = filePath.right(filePath.length() - filePath.lastIndexOf('/') - 1);
-		if (!QFile::copy(filePath, m_toPath + "/" + fileName))
+		QString fileName = filePath.right(filePath.length() - filePath.lastIndexOf('/'));
+		QString toPath = m_toPath + fileName;
+		if (QFile::exists(toPath))
+			continue;
+		if (!QFile::copy(filePath, toPath))
 		{
 			qDebug() << fileName << QStringLiteral(" ¸´ÖÆÊ§°Ü£¡");
 			return false;
@@ -84,11 +96,23 @@ bool DealFileThread::CopyFiles()
 
 bool DealFileThread::MoveFiles()
 {
+	QDir dir(m_toPath);
+	if (!dir.exists())
+	{
+		if (!dir.mkdir(m_toPath))
+		{
+			return false;
+		}
+	}
+
 	int nCount = 0;
 	for (const auto& filePath : m_FromFiles)
 	{
-		QString fileName = filePath.right(filePath.length() - filePath.lastIndexOf('/') - 1);
-		if (!QFile::rename(filePath, m_toPath + "/" + fileName))
+		QString fileName = filePath.right(filePath.length() - filePath.lastIndexOf('/'));
+		QString toPath = m_toPath + fileName;
+		if (QFile::exists(toPath))
+			continue;
+		if (!QFile::rename(filePath, toPath))
 		{
 			qDebug() << fileName << QStringLiteral("ÒÆ¶¯Ê§°Ü£¡");
 			return false;
@@ -103,6 +127,8 @@ bool DealFileThread::DeleteFiles()
 	int nCount = 0;
 	for (const auto& fileName : m_FromFiles)
 	{
+		if (!QFile::exists(fileName))
+			continue;
 		if (!QFile::remove(fileName))
 		{
 			return false;
@@ -114,11 +140,29 @@ bool DealFileThread::DeleteFiles()
 
 bool DealFileThread::CompressFiles()
 {
+	QDir dir(m_toPath);
+	if (!dir.exists())
+	{
+		if (!dir.mkdir(m_toPath))
+		{
+			return false;
+		}
+	}
+
 	return JlCompress::compressFiles(m_toPath, m_FromFiles);
 }
 
 bool DealFileThread::DeCompressFile()
 {
+	QDir dir(m_toPath);
+	if (!dir.exists())
+	{
+		if (!dir.mkdir(m_toPath))
+		{
+			return false;
+		}
+	}
+
 	int nCount = 0;
 	for (const auto filePath : m_FromFiles)
 	{

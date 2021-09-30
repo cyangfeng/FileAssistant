@@ -49,7 +49,6 @@ private:
     void OnShowDoneFile();
     void OnKeyword();
     void OnDealTypeChanged(int nIndex);
-    void OnSpinValueChanged(double dValue);
     void OnTableRightClicked(const QPoint&);
 
     // 列表右键事件

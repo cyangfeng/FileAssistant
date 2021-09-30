@@ -89,8 +89,6 @@ void FileAssistant::Initial()
 	connect(ui.tableView, &QTableView::customContextMenuRequested, this, &FileAssistant::OnTableRightClicked);
     connect(ui.cboFileType, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &FileAssistant::UpdateListItems);
     connect(ui.cboDoType, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &FileAssistant::OnDealTypeChanged);
-	connect(ui.spinFrom, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &FileAssistant::OnSpinValueChanged);
-	connect(ui.spinTo, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &FileAssistant::OnSpinValueChanged);
 
     connect(&m_searchThread, &SearchThread::started, this, &FileAssistant::OnSearchStarted);
     connect(&m_searchThread, &SearchThread::finished, this, &FileAssistant::OnSearchFinished);
@@ -290,11 +288,6 @@ void FileAssistant::OnDealTypeChanged(int nIndex)
     }
 }
 
-void FileAssistant::OnSpinValueChanged(double dValue)
-{
-    UpdateListItems(ui.cboFileType->currentIndex());
-}
-
 void FileAssistant::OnTableRightClicked(const QPoint&)
 {
 	if (ui.tableView->currentIndex().isValid())
@@ -334,8 +327,9 @@ void FileAssistant::OnDelete()
 	QModelIndexList listIndex = ui.tableView->selectionModel()->selectedRows();
 	for (const auto& index : listIndex)
 	{
-        listRows.push_back(index.row());
-        auto itemData = index.data().value<XItemData>();
+        int nRow = index.row();
+        listRows.push_back(nRow);
+        auto itemData = m_upModel->item(nRow)->data().value<XItemData>();
 		fromFiles.push_back(itemData.m_fileInfo.filePath());
 	}
 
@@ -397,7 +391,7 @@ void FileAssistant::OnDealFinished()
 				switch (nType)
 				{
 				case 0:
-                    m_mapDoneFile.insert(itemData.m_fileInfo.filePath(), STATE_COPY);
+                    m_mapDoneFile.insert(itemData.m_fileInfo.fileName(), STATE_COPY);
                     break;
 				case 1:
                     RemoveInvalidFileInfo(itemData.m_fileInfo);
@@ -406,11 +400,11 @@ void FileAssistant::OnDealFinished()
                     RemoveInvalidFileInfo(itemData.m_fileInfo);
 					break;
 				case 3:
-                    m_mapDoneFile.insert(itemData.m_fileInfo.filePath(), STATE_COMPRESS);
+                    m_mapDoneFile.insert(itemData.m_fileInfo.fileName(), STATE_COMPRESS);
                     ui.progressBar->setValue(10);
                     break;
 				case 4:
-                    m_mapDoneFile.insert(itemData.m_fileInfo.filePath(), STATE_DECOMPRESS);
+                    m_mapDoneFile.insert(itemData.m_fileInfo.fileName(), STATE_DECOMPRESS);
 					break;
 				default:
 					break;
@@ -526,8 +520,9 @@ void FileAssistant::UpdateListItems(int nIndex)
 			continue;
 		}
 
-        if (fileInfo.size() < ui.spinFrom->value() || \
-            fileInfo.size() > ui.spinTo->value())
+        qint64 nMin = ui.spinFrom->value() * 1024 * 1024;
+        qint64 nMax = ui.spinTo->value() * 1024 * 1024;
+        if (fileInfo.size() < nMin || fileInfo.size() > nMax)
         {
             continue;
         }
@@ -583,7 +578,7 @@ bool FileAssistant::IsMoiveFile(const QFileInfo& fileInfo)
 
 bool FileAssistant::IsMusicFIle(const QFileInfo& fileInfo)
 {
-    QStringList strList{"mp3", "wma", "wav", "mod", "ra", "cd", "md", "asf", "acc", "mp3pro", \
+    QStringList strList{"mp3", "wma", "wav", "mod", "ra", "cd", "asf", "acc", "mp3pro", \
                         "vqf", "flac", "ape", "mid", "ogg", "m4a", "acc+", "fiff", "au", "vqf" };
 	for (const auto x : strList)
 	{
@@ -624,14 +619,14 @@ bool FileAssistant::IsCompressFile(const QFileInfo& fileInfo)
 
 FileState FileAssistant::GetFileState(const QFileInfo& fileInfo)
 {
-    auto it = m_mapDoneFile.find(fileInfo.filePath());
+    auto it = m_mapDoneFile.find(fileInfo.fileName());
     if (it == m_mapDoneFile.end())
     {
         return STATE_NONE;
     }
     else
     {
-        return m_mapDoneFile[fileInfo.filePath()];
+        return m_mapDoneFile[fileInfo.fileName()];
     }
 }
 
