@@ -100,17 +100,22 @@
   <ItemGroup>
     <ClCompile Include="DealFileThread.cpp" />
     <ClCompile Include="SearchThread.cpp" />
+    <ClCompile Include="settiongdlg.cpp" />
+    <ClCompile Include="util.cpp" />
     <QtRcc Include="fileassistant.qrc" />
     <QtUic Include="fileassistant.ui" />
     <QtMoc Include="fileassistant.h" />
     <ClCompile Include="fileassistant.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="settiongdlg.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SearchThread.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource1.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="util.h" />
+    <QtMoc Include="settiongdlg.h" />
     <QtMoc Include="DealFileThread.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

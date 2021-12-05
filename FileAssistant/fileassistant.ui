@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>742</width>
-    <height>522</height>
+    <width>1080</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,8 +43,33 @@
           </item>
           <item>
            <widget class="QPushButton" name="btnBowers1">
+            <property name="minimumSize">
+             <size>
+              <width>23</width>
+              <height>23</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>23</width>
+              <height>23</height>
+             </size>
+            </property>
             <property name="text">
-             <string>浏览...</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="fileassistant.qrc">
+              <normaloff>:/FileAssistant/image/open.png</normaloff>:/FileAssistant/image/open.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -54,18 +79,54 @@
          <widget class="QPushButton" name="btnFind">
           <property name="minimumSize">
            <size>
-            <width>100</width>
-            <height>0</height>
+            <width>23</width>
+            <height>23</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>120</width>
-            <height>16777215</height>
+            <width>23</width>
+            <height>23</height>
            </size>
           </property>
           <property name="text">
-           <string>查找</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="fileassistant.qrc">
+            <normaloff>:/FileAssistant/image/refresh.png</normaloff>:/FileAssistant/image/refresh.png</iconset>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnSetting">
+          <property name="minimumSize">
+           <size>
+            <width>23</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>23</width>
+            <height>23</height>
+           </size>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::StrongFocus</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="fileassistant.qrc">
+            <normaloff>:/FileAssistant/image/setting.png</normaloff>:/FileAssistant/image/setting.png</iconset>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -298,13 +359,44 @@
           </property>
           <item>
            <widget class="QPushButton" name="btnBowers2">
+            <property name="minimumSize">
+             <size>
+              <width>23</width>
+              <height>23</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>23</width>
+              <height>23</height>
+             </size>
+            </property>
             <property name="text">
-             <string>浏览...</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="fileassistant.qrc">
+              <normaloff>:/FileAssistant/image/open.png</normaloff>:/FileAssistant/image/open.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QCheckBox" name="checkAuto">
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>不存在时自动创建</string>
             </property>

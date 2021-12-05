@@ -1,29 +1,31 @@
 #pragma once
-#include <QThread>
-#include <QFileInfoList>
+#include "pch.h"
 
-class SearchThread : public QThread
-{
-	Q_OBJECT
+namespace fileassistant {
 
-public:
-	SearchThread();
+	class SearchThread : public QThread
+	{
+		Q_OBJECT
 
-	void SetFilePath(const QString& filePath);
-	QFileInfoList GetFileInfoList() const;
+	public:
+		SearchThread();
 
-protected:
+		void SetFilePath(const QString& filePath);
+		QFileInfoList GetFileInfoList() const;
 
-	void run() override;
+	protected:
 
-signals:
-	void PathChanged(const QString& sPath);
+		void run() override;
 
-private:
+	signals:
+		void PathChanged(const QString& sPath);
 
-	bool FindFile(const QString& filePath);
+	private:
 
-	QString m_sFilePath;
-	QFileInfoList m_fileInfoList;
-};
+		bool FindFile(const QString& filePath);
+
+		QString m_sFilePath;
+		QFileInfoList m_fileInfoList;
+	};
+}
 

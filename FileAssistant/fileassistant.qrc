@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/FileAssistant">
         <file>image/shell.png</file>
+        <file>image/refresh.png</file>
+        <file>image/setting.png</file>
+        <file>image/open.png</file>
     </qresource>
 </RCC>

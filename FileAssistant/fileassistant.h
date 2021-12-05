@@ -7,86 +7,92 @@
 #include "SearchThread.h"
 #include "DealFileThread.h"
 
-enum FileState {
-	STATE_COPY,
-	STATE_COMPRESS = 3,
-	STATE_DECOMPRESS,
-    STATE_NONE
-};
+namespace fileassistant {
 
-class XItemData
-{
-public:
-	XItemData() {};
-	XItemData(const QFileInfo& fileInfo, const FileState& fileState)
-	{
-		m_fileState = fileState;
-		m_fileInfo = fileInfo;
+	enum FileState {
+		STATE_COPY,
+		STATE_COMPRESS = 3,
+		STATE_DECOMPRESS,
+		STATE_NONE
 	};
-	~XItemData() {};
 
-	QFileInfo m_fileInfo;
-	FileState m_fileState;
-};
-Q_DECLARE_METATYPE(XItemData)  //注册，必不可少
+	class XItemData
+	{
+	public:
+		XItemData() {};
+		XItemData(const QFileInfo& fileInfo, const FileState& fileState)
+		{
+			m_fileState = fileState;
+			m_fileInfo = fileInfo;
+		};
+		~XItemData() {};
 
-class FileAssistant : public QDialog
-{
-    Q_OBJECT
+		QFileInfo m_fileInfo;
+		FileState m_fileState;
+	};
+	Q_DECLARE_METATYPE(XItemData)  //注册，必不可少
 
-public:
-    FileAssistant(QWidget *parent = Q_NULLPTR);
+		class FileAssistant : public QDialog
+	{
+		Q_OBJECT
 
-protected:
-    void resizeEvent(QResizeEvent* event);
+	public:
+		FileAssistant(QWidget* parent = Q_NULLPTR);
 
-private:
-    void Initial();
+	protected:
+		void resizeEvent(QResizeEvent* event);
 
-    void OnBtnBowers();
-    void OnSearch();
-    void OnDoing();
-    void OnShowDoneFile();
-    void OnKeyword();
-    void OnDealTypeChanged(int nIndex);
-    void OnTableRightClicked(const QPoint&);
+	private:
+		void Initial();
 
-    // 列表右键事件
-    void OnReCheck();
-    void OnOpen();
-    void OnDelete();
+		void OnBtnBowers();
+		void OnSearch();
+		void OnDoing();
+		void OnShowDoneFile();
+		void OnKeyword();
+		void OnDealTypeChanged(int nIndex);
+		void OnTableRightClicked(const QPoint&);
+		void OnSetting();
 
-    void OnSearchStarted();
-    void OnSearchFinished();
-    void OnPathChanged(const QString& sPath);
+		// 列表右键事件
+		void OnReCheck();
+		void OnOpen();
+		void OnDelete();
 
-	void OnDealStarted();
-	void OnDealFinished();
-    void OnValueChanged(int nValue);
+		void OnSearchStarted();
+		void OnSearchFinished();
+		void OnPathChanged(const QString& sPath);
 
-    QString ConvertFielSize(qint64 nSize);
-    void UpdateListItems(int nIndex);
+		void OnDealStarted();
+		void OnDealFinished();
+		void OnValueChanged(int nValue);
 
-    bool IsMoiveFile(const QFileInfo& fileInfo);
-    bool IsMusicFIle(const QFileInfo& fileInfo);
-    bool IsDocumentFile(const QFileInfo& fileInfo);
-    bool IsCompressFile(const QFileInfo& fileInfo);
+		QString ConvertFielSize(qint64 nSize);
+		void UpdateListItems(int nIndex);
 
-    FileState GetFileState(const QFileInfo& fileInfo);
-    QString GetFileStateName(const QFileInfo& fileInfo);
-    bool ContainKeyword(const QString& fileName) const;
+		bool IsMoiveFile(const QFileInfo& fileInfo);
+		bool IsMusicFIle(const QFileInfo& fileInfo);
+		bool IsDocumentFile(const QFileInfo& fileInfo);
+		bool IsCompressFile(const QFileInfo& fileInfo);
 
-    void RemoveInvalidFileInfo(const QFileInfo& fileInfo);
-    void EnableControls(bool bEable = true);
+		FileState GetFileState(const QFileInfo& fileInfo);
+		QString GetFileStateName(const QFileInfo& fileInfo);
+		bool ContainKeyword(const QString& fileName) const;
 
-private:
-    Ui::FileAssistantClass ui;
+		void RemoveInvalidFileInfo(const QFileInfo& fileInfo);
+		void EnableControls(bool bEable = true);
+		void EnableTableChecks(bool bEnable = true);
+		void UpdateSetting();
 
-    SearchThread m_searchThread;
-    DealFileThread m_dealThread;
-    QFileInfoList m_fileInfoList;
-    QMap<QString, FileState> m_mapDoneFile;
+	private:
+		Ui::FileAssistantClass ui;
 
-    QMenu *m_pMenu;
-    std::unique_ptr<QStandardItemModel> m_upModel;
-};
+		SearchThread m_searchThread;
+		DealFileThread m_dealThread;
+		QFileInfoList m_fileInfoList;
+		QMap<QString, FileState> m_mapDoneFile;
+
+		QMenu* m_pMenu;
+		std::unique_ptr<QStandardItemModel> m_upModel;
+	};
+}
