@@ -119,6 +119,7 @@ namespace fileassistant {
             if (!strlist.empty())
             {
                 filePath = strlist[0];
+                OnSearch();
             }
         }
 
